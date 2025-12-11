@@ -1,7 +1,7 @@
 Building Docs
 --------------
 
-    sudo -E $CONDA_EXE install --file ./requirements.txt
+    To generate the documents run (make sure you sourced /firesim/sourceme-manager.sh)
     make html
 
 Look in the `_build/html` directory for output. You can also run
