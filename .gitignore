@@ -16,3 +16,8 @@ scala-doc-env.sh
 vivado*.log
 vivado*.jou
 __pycache__
+default_build_dir
+platforms/xilinx_alveo_u200/
+sim
+firesim_run_dir
+deploy/workloads
