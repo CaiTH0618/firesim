@@ -33,7 +33,13 @@ create_project -force firesim ${root_dir}/vivado_proj -part $part
 set_property board_part $board_part [current_project]
 
 # Loading all the verilog files
-foreach addFile [list ${root_dir}/design/axi_tieoff_master.v ${root_dir}/design/firesim_wrapper.v ${root_dir}/design/FireSim-generated.sv ${root_dir}/design/FireSim-generated.defines.vh] {
+set verilog_files [list ${root_dir}/design/axi_tieoff_master.v ${root_dir}/design/firesim_wrapper.v ${root_dir}/design/FireSim-generated.sv ${root_dir}/design/FireSim-generated.defines.vh]
+# generated-src directory usually has plusarg_reader.v, we should include it if present
+if {[file exists ${root_dir}/design/plusarg_reader.v]} {
+  lappend verilog_files ${root_dir}/design/plusarg_reader.v
+}
+
+foreach addFile $verilog_files {
   set addFile [retrieveVersionedFile $addFile $vivado_version]
   check_file_exists $addFile
   add_files $addFile
