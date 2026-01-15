@@ -54,6 +54,13 @@ $(repo_state): $(simulator_verilog) $(fpga_work_dir)/stamp
 $(fpga_delivery_dir)/$(BASE_FILE_NAME)%: $(simulator_verilog) $(fpga_work_dir)/stamp
 	cp -f $(GENERATED_DIR)/*.ipgen.tcl $(@D) || true
 	cp -f $(GENERATED_DIR)/$(@F) $@
+	# Copy any FIRRTL blackbox resource files (one-per-line list), if present
+	if [ -f $(GENERATED_DIR)/firrtl_black_box_resource_files.f ]; then \
+		while read -r bb_file; do \
+			cp -f "$$bb_file" "$(@D)" || true; \
+		done < $(GENERATED_DIR)/firrtl_black_box_resource_files.f; \
+	fi
+	cp -f $(GENERATED_DIR)/plusarg_reader.v $(@D) || true
 
 $(fpga_driver_dir)/$(BASE_FILE_NAME)%: $(simulator_verilog) $(fpga_work_dir)/stamp
 	mkdir -p $(@D)
