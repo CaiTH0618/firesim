@@ -16,3 +16,6 @@ scala-doc-env.sh
 vivado*.log
 vivado*.jou
 __pycache__
+deploy/workloads/*
+env.sh.backup
+platforms/xilinx_alveo_u200/cl_firesim/design/*
