@@ -27,12 +27,20 @@ if {([llength ${ml_tcls}] == 0) && ([file exists ${ml_qor_suggestions}])} {
 
   reset_runs ${impl_run}
 
-  set_property RQS_FILES ${ml_qor_suggestions} ${impl_run}
-  set_property STEPS.OPT_DESIGN.ARGS.DIRECTIVE RQS ${impl_run}
-  set_property STEPS.PLACE_DESIGN.ARGS.DIRECTIVE RQS ${impl_run}
+  # set_property RQS_FILES ${ml_qor_suggestions} ${impl_run}
+  set rqs_loader ${root_dir}/vivado_proj/load_rqs.tcl
+  set fp [open ${rqs_loader} w]
+  puts $fp "puts \"DEBUG: Loading RQS from ${ml_qor_suggestions}\""
+  puts $fp "if {![file exists ${ml_qor_suggestions}]} { puts \"CRITICAL WARNING: RQS file not found at ${ml_qor_suggestions}\" }"
+  puts $fp "read_qor_suggestions -verbose ${ml_qor_suggestions}"
+  close $fp
+  set_property STEPS.OPT_DESIGN.TCL.PRE ${rqs_loader} ${impl_run}
+
+  # set_property STEPS.OPT_DESIGN.ARGS.DIRECTIVE RQS ${impl_run}
+  # set_property STEPS.PLACE_DESIGN.ARGS.DIRECTIVE RQS ${impl_run}
   set_property STEPS.PHYS_OPT_DESIGN.IS_ENABLED true ${impl_run}
-  set_property STEPS.PHYS_OPT_DESIGN.ARGS.DIRECTIVE RQS ${impl_run}
-  set_property STEPS.ROUTE_DESIGN.ARGS.DIRECTIVE RQS ${impl_run}
+  # set_property STEPS.PHYS_OPT_DESIGN.ARGS.DIRECTIVE RQS ${impl_run}
+  # set_property STEPS.ROUTE_DESIGN.ARGS.DIRECTIVE RQS ${impl_run}
 
   launch_runs ${impl_run} -to_step route_design -jobs ${jobs}
   wait_on_run ${impl_run}
